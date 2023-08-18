@@ -1,0 +1,19 @@
+using UnityEngine;
+using UnityEditor; // This is needed for the [CustomEditor] attribute
+
+[CustomEditor(typeof(ProceduralGeneration))]
+public class GeneralEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        ProceduralGeneration generationScript = (ProceduralGeneration)target;
+
+        if (GUILayout.Button("Generate Terrain"))
+        {
+            generationScript.ClearTerrain();
+            generationScript.GenerateTerrain();
+        }
+    }
+}
