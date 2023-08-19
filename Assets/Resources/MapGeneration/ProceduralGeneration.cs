@@ -51,7 +51,7 @@ public class ProceduralGeneration : MonoBehaviour
 
                     if (y == terrainHeight && primaryNoise > 0.5f && secondaryNoise > 0.75f)
                     {
-                        SpawnSprite(rockSprite, spawnPosition + Vector2.up, 1);
+                        SpawnSprite(rockSprite, spawnPosition + Vector2.up * Random.Range(-y, 0), 1);
 
                     }
                 }
