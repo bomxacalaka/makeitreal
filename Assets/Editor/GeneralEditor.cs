@@ -15,5 +15,9 @@ public class GeneralEditor : Editor
             generationScript.ClearTerrain();
             generationScript.GenerateTerrain();
         }
+        if (GUILayout.Button("Clear Terrain"))
+        {
+            generationScript.ClearTerrain();
+        }
     }
 }
