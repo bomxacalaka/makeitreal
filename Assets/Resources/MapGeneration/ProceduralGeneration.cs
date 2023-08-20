@@ -16,10 +16,16 @@ public class ProceduralGeneration : MonoBehaviour
     void Start()
     {
         GenerateTerrain();
+    }//
+
+    private void OnValidate()
+    {
+        xOffset = Random.Range(0, 9999);
+        yOffset = Random.Range(0, 9999);
     }
 
 
-    public void GenerateTerrain()
+    public void GenerateTerrain(int mainOffset = 0)
     {
 
         // Load sprites from Resources folder
@@ -31,9 +37,8 @@ public class ProceduralGeneration : MonoBehaviour
             treeSprite = Resources.Load<Sprite>("Sprites/tree");
         }
 
-        xOffset = Random.Range(0, 9999);
-        yOffset = Random.Range(0, 9999);
-        for (int x = 0; x < width; x++)
+
+        for (int x = 0 + mainOffset; x < width + mainOffset; x++)
         {
             float primaryNoise = Mathf.PerlinNoise(x * scale + xOffset, yOffset);
             float secondaryNoise = Mathf.PerlinNoise(x * secondaryScale + xOffset, yOffset * secondaryScale);
@@ -43,7 +48,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for (int y = 0; y < height; y++)
             {
-                Vector2 spawnPosition = new Vector2(x, y);
+                Vector2 spawnPosition = new Vector2(x - mainOffset, y);
 
                 if (y <= terrainHeight)
                 {

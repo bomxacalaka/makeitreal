@@ -4,6 +4,7 @@ using UnityEditor; // This is needed for the [CustomEditor] attribute
 [CustomEditor(typeof(ProceduralGeneration))]
 public class GeneralEditor : Editor
 {
+    int mainOffset = 0;
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -18,6 +19,12 @@ public class GeneralEditor : Editor
         if (GUILayout.Button("Clear Terrain"))
         {
             generationScript.ClearTerrain();
+        }
+        if (GUILayout.Button("Add to mainOffset"))
+        {
+            mainOffset += 1;
+            generationScript.ClearTerrain();
+            generationScript.GenerateTerrain(mainOffset);
         }
     }
 }
