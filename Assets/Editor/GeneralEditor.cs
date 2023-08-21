@@ -22,7 +22,7 @@ public class GeneralEditor : Editor
         }
         if (GUILayout.Button("Add to mainOffset"))
         {
-            mainOffset += 1;
+            mainOffset += 10;
             generationScript.ClearTerrain();
             generationScript.GenerateTerrain(mainOffset);
         }

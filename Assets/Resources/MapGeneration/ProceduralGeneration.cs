@@ -1,9 +1,11 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ProceduralGeneration : MonoBehaviour
 {
     [SerializeField] int width = 1000, height = 50;
     [SerializeField] Sprite grassSprite, dirtSprite, rockSprite, treeSprite;
+    [SerializeField] Transform target;
 
     [Header("Noise Settings")]
     [SerializeField] float scale = 0.01f;
@@ -21,7 +23,13 @@ public class ProceduralGeneration : MonoBehaviour
     private void OnValidate()
     {
         xOffset = Random.Range(0, 9999);
-        yOffset = Random.Range(0, 9999);
+        yOffset = Random.Range(0, 9999); //
+    }
+
+    private void Update()
+    {
+        ClearTerrain();
+        GenerateTerrain();
     }
 
 
@@ -37,8 +45,12 @@ public class ProceduralGeneration : MonoBehaviour
             treeSprite = Resources.Load<Sprite>("Sprites/tree");
         }
 
+        int playerX = (int) target.position.x;
 
-        for (int x = 0 + mainOffset; x < width + mainOffset; x++)
+        playerX -= 50;
+
+
+        for (int x = 0 + playerX; x < width + playerX; x++)
         {
             float primaryNoise = Mathf.PerlinNoise(x * scale + xOffset, yOffset);
             float secondaryNoise = Mathf.PerlinNoise(x * secondaryScale + xOffset, yOffset * secondaryScale);
@@ -48,7 +60,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for (int y = 0; y < height; y++)
             {
-                Vector2 spawnPosition = new Vector2(x - mainOffset, y);
+                Vector2 spawnPosition = new Vector2(x, y);
 
                 if (y <= terrainHeight)
                 {
@@ -78,6 +90,13 @@ public class ProceduralGeneration : MonoBehaviour
         SpriteRenderer spriteRenderer = newObj.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
         spriteRenderer.sortingOrder = sortingOrder;
+
+        // Add a box collider to the sprite
+        newObj.AddComponent<BoxCollider2D>();
+        newObj.transform.localPosition = position;
+
+        // Assign layer ground to the sprite
+        newObj.layer = LayerMask.NameToLayer("Ground");
     }
 
     // New method to clear existing terrain
