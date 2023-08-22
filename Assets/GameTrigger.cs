@@ -18,8 +18,16 @@ public class GameTrigger : MonoBehaviour
 
 
 
-private void StartGame()
+    private void StartGame()
     {
+        // Position the game elements at the center of the screen
+        Camera mainCamera = Camera.main;
+        Vector3 screenCenter = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, mainCamera.nearClipPlane + 10f)); // Adjust the '10f' if needed
+        gameElements.transform.position = new Vector3(screenCenter.x, screenCenter.y, gameElements.transform.position.z);
+
+        // Update the boundaries
+        timingGame.UpdateEdges();
+
         // Activate the game elements
         gameElements.SetActive(true);
 
@@ -27,4 +35,5 @@ private void StartGame()
         timingGame.isActive = true;
         // Add any other logic here if needed to start the game
     }
+
 }

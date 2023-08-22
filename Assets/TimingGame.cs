@@ -29,7 +29,7 @@ public class TimingGame : MonoBehaviour
         UpdateEdges();
     }
 
-    private void UpdateEdges()
+    public void UpdateEdges()
     {
         // Green Bar Edges
         SpriteRenderer greenRenderer = greenBar.GetComponent<SpriteRenderer>();
