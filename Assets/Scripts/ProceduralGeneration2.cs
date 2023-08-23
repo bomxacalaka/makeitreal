@@ -6,6 +6,12 @@ public class ProceduralGeneration2 : MonoBehaviour
     [SerializeField] GameObject floor;
     [SerializeField] Transform target;
 
+    [Header("Settings")]
+    [SerializeField] int viewDistanceRender = 10;
+    [SerializeField] int spaceBetweenChunk = 10;
+    [SerializeField] int deleteChunkBehindThreshold = 10;
+
+
     private int[] chunks;
 
    void Start()
@@ -28,14 +34,14 @@ public class ProceduralGeneration2 : MonoBehaviour
         float playerX = target.position.x;
         float goX = gameObject.transform.position.x;
 
-        if (goX - playerX >= -10 && goX - playerX <= 10 && chunks[(int)goX] == 0)
+        if (goX - playerX >= -viewDistanceRender && goX - playerX <= viewDistanceRender && chunks[(int)goX] == 0)
         {
-            SpawnGameObject(floor, new Vector3(goX + 10, 0, 0));
+            SpawnGameObject(floor, new Vector3(goX + spaceBetweenChunk, 0, 0));
             chunks[(int)goX] = 1;
         }
         else
         {
-            if (goX - playerX <= -10 && chunks[(int)goX] == 1)
+            if (goX - playerX <= -deleteChunkBehindThreshold && chunks[(int)goX] == 1)
             {
                 Destroy(gameObject);
                 chunks[(int)goX] = 0;
