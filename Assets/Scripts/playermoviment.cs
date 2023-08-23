@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class playermoviment : MonoBehaviour
 {
@@ -27,9 +28,12 @@ public class playermoviment : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
-
-
         Flip();
+
+        //A a;
+
+        //generationScript.ClearTerrain();
+        //generationScript.GenerateTerrain();
     }
 
     private void FixedUpdate()
