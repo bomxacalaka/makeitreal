@@ -21,8 +21,21 @@ public class TimingGame : MonoBehaviour
     private Vector2 redLeftEdge;
     private Vector2 redRightEdge;
 
+    public GameTrigger gameTrigger;  // Reference to the GameTrigger script
+    private int currentTries = 0;
+    private const int maxTries = 3;
+
     private void Start()
     {
+        if (gameTrigger == null)
+        {
+            gameTrigger = GameObject.Find("house").GetComponent<GameTrigger>();
+
+            if (gameTrigger == null)
+            {
+                Debug.LogError("Failed to find GameTrigger script!");
+            }
+        }
         initialGreenBarWidth = greenBar.transform.lossyScale.x;
 
 
@@ -48,6 +61,7 @@ public class TimingGame : MonoBehaviour
 
     void Update()
     {
+
         if (isActive)
         {
             // Moving the line left and right
@@ -79,9 +93,27 @@ public class TimingGame : MonoBehaviour
             // Check for user input
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                currentTries++;
                 CheckSuccess();
+                Debug.Log(currentTries);
+
+                if (currentTries >= maxTries)
+                {
+                    if (gameTrigger)
+                    {
+                        gameTrigger.EndGame();
+                        Debug.Log("called");
+
+                    }
+                    ResetGame();
+                }
             }
         }
+    }
+    private void ResetGame()
+    {
+        currentTries = 0;
+        // Add any other resetting logic here if needed
     }
 
 

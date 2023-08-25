@@ -7,20 +7,33 @@ public class PlayerMovement : MonoBehaviour {
 	public CharacterController2D controller;
 
 	public float runSpeed = 40f;
+	private TimingGame timingGame;
 
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
-	
+
 	// Update is called once per frame
+	private void Awake()
+	{
+		// ... other initialization if any ...
+
+		timingGame = FindObjectOfType<TimingGame>();
+		if (!timingGame)
+		{
+			Debug.LogError("TimingGame script not found in the scene!");
+		}
+	}
 	void Update () {
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-		if (Input.GetButtonDown("Jump"))
+		if (Input.GetButtonDown("Jump") && !timingGame.isActive)
 		{
 			jump = true;
 		}
+
+	
 
 		if (Input.GetButtonDown("Crouch"))
 		{
@@ -29,6 +42,8 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			crouch = false;
 		}
+
+	
 
 	}
 

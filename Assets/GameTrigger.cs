@@ -1,39 +1,57 @@
 using UnityEngine;
+using System.Collections;
 
 public class GameTrigger : MonoBehaviour
 {
-    public TimingGame timingGame; // Reference to your TimingGame script
-    public GameObject gameElements; // Reference to the GameObject containing all game elements
+    public TimingGame timingGame;
+    public GameObject gameElements;
+    private CharacterController2D playerController;
+
+    private bool gameAlreadyTriggered = false;
+
+    private void Awake()
+    {
+        playerController = FindObjectOfType<CharacterController2D>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collision Detected with: " + other.gameObject.name);
-
-        // Check if the character has collided with the GameStarter object and the game is not already started
-        if (other.CompareTag("GameStarter") && !timingGame.isActive)
+        if (other.CompareTag("GameStarter") && !timingGame.isActive && !gameAlreadyTriggered)
         {
             StartGame();
         }
     }
 
-
-
     private void StartGame()
     {
-        // Position the game elements at the center of the screen
-        Camera mainCamera = Camera.main;
-        Vector3 screenCenter = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, mainCamera.nearClipPlane + 10f)); // Adjust the '10f' if needed
-        gameElements.transform.position = new Vector3(screenCenter.x, screenCenter.y, gameElements.transform.position.z);
+        gameAlreadyTriggered = true;
 
-        // Update the boundaries
-        timingGame.UpdateEdges();
+        // Set the gameElements' x position to be the same as the player's x position
+        Vector3 playerPosition = playerController.transform.position;
+        gameElements.transform.position = new Vector3(playerPosition.x, gameElements.transform.position.y, gameElements.transform.position.z);
 
-        // Activate the game elements
+        if (playerController)
+            playerController.FreezePlayer();
+
         gameElements.SetActive(true);
-
-        // Trigger the game
         timingGame.isActive = true;
-        // Add any other logic here if needed to start the game
     }
 
+    public void EndGame()
+    {
+        gameElements.SetActive(false);
+        timingGame.isActive = false;
+
+        // Call the coroutine to handle the unfreezing after a delay
+        StartCoroutine(DelayedUnfreezePlayer());
+    }
+
+    private IEnumerator DelayedUnfreezePlayer()
+    {
+        // Wait for 1 second
+        yield return new WaitForSeconds(.1f);
+
+        if (playerController)
+            playerController.UnfreezePlayer();
+    }
 }

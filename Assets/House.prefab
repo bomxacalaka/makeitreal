@@ -167,6 +167,7 @@ MonoBehaviour:
   redBar: {fileID: 3702538222568132676}
   moveSpeed: 5
   isActive: 0
+  gameTrigger: {fileID: 1486195380225226536}
 --- !u!1 &4026797336962819039
 GameObject:
   m_ObjectHideFlags: 0
